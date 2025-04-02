@@ -1,0 +1,102 @@
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <button id="new-note" class="new-note-btn" title="New note" aria-label="New note">
+            <i data-lucide="square-pen"></i>
+        </button>
+        <button id="remove-note" class="remove-note-btn" title="Remove note" aria-label="Remove note">
+            <i data-lucide="trash"></i>
+        </button>
+    </div>
+    <div id="notes-list" class="notes-list">
+    </div>
+</aside>
+
+<script>
+    import { ulid } from 'ulid';
+    import { createIcons, Trash, SquarePen } from 'lucide'
+    import { removeNote } from '../functions/notes';
+
+    createIcons({
+        icons: {
+            Trash,
+            SquarePen
+        }
+    })
+
+    document.getElementById('new-note')?.addEventListener('click', () => {
+        const noteId = ulid();
+        window.location.hash = noteId;
+        window.location.reload();
+    })
+
+    document.getElementById('remove-note')?.addEventListener('click', () => {
+        removeNote();
+    })
+</script>
+
+<style>
+    .sidebar {
+        width: 250px;
+        background-color: var(--bg-secondary);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: 1rem;
+    }
+
+    .sidebar-header {
+        padding: 1rem;
+        padding-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    button {
+        width: 1.25rem;
+        height: 1.25rem;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        color: var(--text-primary);
+        opacity: 0.8;
+        transition: all 0.2s;
+    }
+
+    button:hover {
+        opacity: 1;
+    }
+
+    .remove-note-btn:hover {
+        color: red;
+    }
+
+    button svg {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .notes-list {
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    :global(.note-item) {
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 14px;
+        opacity: 0.7;
+    }
+
+    :global(.note-item.active),
+    :global(.note-item:hover) {
+        opacity: 1;
+    }
+
+    :global(.note-item.active) {
+        font-weight: 500;
+    }
+</style>
